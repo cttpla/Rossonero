@@ -1,0 +1,75 @@
+(main)MTBSDRWT
+
+  ***************************
+  *                         *
+  *  MO6 ASM 6809           *
+  *                         *
+  *  Draw 2 colors sprite   *
+  *                         *
+  ***************************
+
+		 ORG $42B0	 
+		 ORCC #$80   .suppress monitor
+		 
+		 * Clear counts
+		 LDA #00
+		 STA SPRCW
+		 STA SPRCH
+		
+		 * Draw sprite (in 320x200)
+RD       LDU 2,X      .#SPRITE
+		 LDY $42A0    .POSST
+		 STY STRPOS
+		 
+		 * Read width, store width
+		 LDB ,U+
+		 STB SPRWDT
+		 
+		 * Read heigth, store heigth
+		 LDB ,U+
+		 STB SPRHGT
+  		 
+		 * Passaggio memoria forma
+		 LDA $A7C0
+		 ORA #1
+		 STA $A7C0
+
+         * Read forma
+CF		 LDB ,U+	     
+
+         * Setta forma e avanza pos
+		 STB ,Y+
+		 
+		 * Cambia linea?
+LC		 LDA SPRCW
+		 INCA
+		 STA SPRCW
+		 CMPA SPRWDT
+		 BLO CF
+		 LDA #00
+		 STA SPRCW
+		 LDD STRPOS    .math new line pos
+		 ADDD #40
+         STD STRPOS		 
+         LDY STRPOS
+		 LDA SPRCH
+		 INCA
+		 STA SPRCH
+		 CMPA SPRHGT
+		 BLO CF
+        
+BCK		 RTS
+
+SPR10
+         FCB $03,$02    * width, height
+         FCB $10,$FF,$23,$F1,$10,$FF
+		 FCB $10,$FF,$75,$F1,$10,$FF 	
+
+STRPOS   RMB 2,0  .store temp start pos
+SPRWDT   RMB 1,0  .store temp sprite width
+SPRHGT   RMB 1,0  .store temp sprite height
+SPRCW    RMB 1,0  .counter temp sprite width
+SPRCH    RMB 1,0  .counter temp sprite height
+		 
+		 END
+		 

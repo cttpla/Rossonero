@@ -49,7 +49,7 @@ NOTE TECNICHE:
 
 Il gioco è stato realizzato in occasione di Once Upon A Sprite 2019.
 La grafica è stata ottenuta partendo da foto vere che sono state ridotte al
-formato 160x200x2: in questo modo è stato possibile preservare i byte della
+formato 160x100x2: in questo modo è stato possibile preservare i byte della
 memoria forma nel porting dell'immagine senza rischiare che il color clash
 ne alterasse la resa. Le immagini sono convertite da bitmap a sequenze di 
 ottetti.
